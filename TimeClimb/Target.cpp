@@ -23,6 +23,10 @@ Target::Target()
 	animationClock.restart();
 	animationTime = 0;
 
+	_kinectControl = false;
+	_trashHold = 2;
+	kinectApplication.Run();
+
 }
 
 Target::~Target()
@@ -58,12 +62,49 @@ void Target::setClickState(bool ans)
 
 void Target::Update(sf::Event& event) {
 
-	if (dist2(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), sf::Vector2f(VisibleGameObject::getCenter()) ) < 75*75
-		&& Unbreakable == false)
-	{
-		if (!hasClicked) {
-			hasClicked = true;
-			animationStart = true;
+
+	//_kinectControl set true or false in Game Init
+	if (_kinectControl) {
+		for (int i = 0; i < JointType_Count; i++) {
+
+			joint_xy = sf::Vector2f(kinectApplication.SkeletPointsXY(i).x, kinectApplication.SkeletPointsXY(i).y);
+			joint_z = kinectApplication.DepthSkeletonPoints(i);
+
+			/*HANDRIGHT_xy = sf::Vector2f((kinectApplication.SkeletPointsXY(HANDRIGHT).x + kinectApplication.SkeletPointsXY(WRISTRIGHT).x + kinectApplication.SkeletPointsXY(HANDTIPRIGHT).x + kinectApplication.SkeletPointsXY(THUMBRIGHT).x) / 4,
+				(kinectApplication.SkeletPointsXY(HANDRIGHT).y + kinectApplication.SkeletPointsXY(WRISTRIGHT).y + kinectApplication.SkeletPointsXY(HANDTIPRIGHT).y + kinectApplication.SkeletPointsXY(THUMBRIGHT).y) / 4);
+			HANDRIGHT_z = (kinectApplication.DepthSkeletonPoints(HANDRIGHT) + kinectApplication.DepthSkeletonPoints(WRISTRIGHT) + kinectApplication.DepthSkeletonPoints(HANDTIPRIGHT) + kinectApplication.DepthSkeletonPoints(THUMBRIGHT) + kinectApplication.DepthSkeletonPoints(ELBOWRIGHT)) / 5;
+*/
+
+			//HANDRIGHT_xy.x = HANDRIGHT_xy.x * 1900 / 640 * 1 / 1; //translate to pixel
+			//HANDRIGHT_xy.y = HANDRIGHT_xy.y * 1080 / 280 * 1 / 1;//same
+
+			joint_xy.x = joint_xy.x * 1900 / 640 * 1 / 1; //translate to pixel
+			joint_xy.y = joint_xy.y * 1080 / 280 * 1 / 1;//same
+
+
+			if (joint_z >= _trashHold) {
+				if (animationClock.getElapsedTime().asMilliseconds() > 100) {						//need instad (event.type == sf::Event::MouseButtonPressed) to avoid mass click to target
+					if ((dist2(VisibleGameObject::getCenter(), joint_xy) < 6400))
+						if (!hasClicked) {
+							hasClicked = true;
+							animationStart = true;
+						}
+				}
+			}
+		}
+	}
+
+
+	else {
+
+
+		if (dist2(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), sf::Vector2f(VisibleGameObject::getCenter())) < 75 * 75
+			&& Unbreakable == false)
+		{
+			if (!hasClicked) {
+				hasClicked = true;
+				animationStart = true;
+			}
 		}
 	}
 	animation();

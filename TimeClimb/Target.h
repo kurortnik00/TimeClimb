@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VisibleGameObject.h"
+#include "BodyBasics.h"
 
 class Target :
 	public VisibleGameObject
@@ -29,5 +30,11 @@ private:
 	bool animationStart;
 	float animationTime;
 	float dist2(sf::Vector2f const & p1, sf::Vector2f const & p2);
+
+	bool _kinectControl;
+	float _trashHold;
+	CBodyBasics kinectApplication;
+	sf::Vector2f joint_xy;
+	float joint_z;
 	
 };

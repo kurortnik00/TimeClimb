@@ -26,6 +26,7 @@ public:
 	virtual float GetHeight() const;
 	virtual void setClickState(bool ans);
 	virtual sf::Vector2f getCenter();
+	virtual float getFinishedTime();
 
 	void setPlased(bool res);
 	bool getPlased();

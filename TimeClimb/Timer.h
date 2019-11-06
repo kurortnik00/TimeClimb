@@ -15,6 +15,7 @@ public:
 	void setFinished(bool res);		//переводит finished в true
 	bool getFinished();
 	void reInit();
+	float getFinishedTime();
 
 
 private:

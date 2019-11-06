@@ -62,4 +62,9 @@ void Timer::reInit() {
 	text.setPosition(50, 400);
 	finished = false;
 }
+
+float Timer::getFinishedTime()
+{
+	return finishedTime;
+}
 	

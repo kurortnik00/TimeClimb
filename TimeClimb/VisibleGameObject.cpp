@@ -149,3 +149,8 @@ sf::Vector2f VisibleGameObject::getCenter() {
 	sf::IntRect rect = _sprite.getTextureRect();
 	return sf::Vector2f(_sprite.getPosition().x + rect.width / 2, _sprite.getPosition().y + rect.height / 2);
 }
+
+float VisibleGameObject::getFinishedTime()
+{
+	return -1;
+}

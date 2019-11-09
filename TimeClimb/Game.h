@@ -36,4 +36,5 @@ private:
 	static sf::RenderWindow _mainWindow;
 	static GameObjectManager _gameObjectManager;
 	static std::set<std::pair<float, std::string>> TOP_List;
+	static bool kinectControl;
 };

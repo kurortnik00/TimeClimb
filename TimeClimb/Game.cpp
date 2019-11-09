@@ -150,6 +150,7 @@ void Game::Init(int targ_count) {
 		Target *tar = new Target();
 		tar->Load("images/target2.png");
 		tar->SetPosition(200 + 200*i, 500);
+		tar->setKinectControl(kinectControl);
 		_gameObjectManager.Add(std::to_string(i), tar);
 	}
 
@@ -229,6 +230,6 @@ Game::GameState Game::_gameState = Uninitialized;
 sf::RenderWindow Game::_mainWindow;
 int Game::targetCount = 3;
 std::set<std::pair<float, std::string>> Game::TOP_List = { {6, "ASd"} , {5, "zzz"} , {1, "qq"} , {4, "44"} };
-
+bool Game::kinectControl = true;
 
 

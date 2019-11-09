@@ -17,6 +17,8 @@ public:
 	bool getUnbreakable();
 	void setClickState(bool ans);
 	void reInit();
+	void Draw(sf::RenderWindow & window);
+	void setKinectControl(bool kinectControl);
 
 
 private:
@@ -36,5 +38,15 @@ private:
 	CBodyBasics kinectApplication;
 	sf::Vector2f joint_xy;
 	float joint_z;
+
+
+	float kinectTranform_X_Cordinates(float x);
+	float kinectTranform_Y_Cordinates(float y);
+	enum tracking_Type
+	{
+		allJoints, mainPointAvarage, allJointsTimeAvarage, mainPointTimeAvarage
+	};
+	void kinectUpdateActions(int joint_Count, tracking_Type tT);
+
 	
 };

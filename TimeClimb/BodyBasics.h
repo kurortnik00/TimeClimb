@@ -5,7 +5,7 @@
 //------------------------------------------------------------------------------
 
 #pragma once
-
+#include "stdafx.h"
 #include <windows.h>
 
 #include <Shlobj.h>
@@ -13,6 +13,8 @@
 // Kinect Header files
 #include <Kinect.h>
 #include <d2d1.h>
+
+
 
 class CBodyBasics
 {
@@ -59,6 +61,22 @@ public:
 	D2D1_POINT_2F			SkeletPointsXY(int i);
 	float					DepthSkeletonPoints(int i);
 
+	enum pointAveragedJoints
+	{
+		RIGHT_ARM, LEFT_ARM, RIGHT_LEG, LEFT_LEG
+	};
+
+	//return the avarage of nearest points of arms and legs
+	sf::Vector2f			arms_legs_pointAveraged_PointsXY(int i);
+	float					arms_legs_pointAveraged_DepthPoints(int i);
+
+	sf::Vector2f			allJoints_timeAveraged_PointsXY(int i);
+	float					allJoints_timeAveraged_DepthPoints(int i);
+
+
+	sf::Vector2f			arms_legs_timeAveraged_PointsXY(int i);
+	float					arms_legs_timeAveraged_DepthPoints(int i);
+
 private:
 	HWND                    m_hWnd;
 	INT64                   m_nStartTime;
@@ -77,6 +95,7 @@ private:
 
 	Joint trackPoints[JointType_Count];
 	D2D1_POINT_2F trackPointsXY[JointType_Count];
+	float trackDepthPoint[JointType_Count];
 
 	/// <summary>
 	/// Main processing function
@@ -148,6 +167,53 @@ private:
 	/// <param name="joint0">one joint of the bone to draw</param>
 	/// <param name="joint1">other joint of the bone to draw</param>
 	void                    DrawBone(const Joint* pJoints, const D2D1_POINT_2F* pJointPoints, JointType joint0, JointType joint1);
+
+	struct JointPoints_buffer
+	{
+		D2D1_POINT_2F  joints[JointType_Count];
+	};
+	std::vector<JointPoints_buffer> buffer;
+
+	struct JointPoints_Depthbuffer
+	{
+		float jointsDepth[JointType_Count];
+		float jointsDepth_4[LEFT_LEG + 1];
+	};
+	std::vector<JointPoints_Depthbuffer> depthBuffer;
+
+	struct JointPoints_vec_buffer
+	{
+		sf::Vector2f  joints[LEFT_LEG + 1];
+	};
+	std::vector<JointPoints_vec_buffer> vec_Buffer;
+
+	enum {
+		SPINEBASE,
+		SPINEMID,
+		NECK,
+		HEAD,
+		SHOULDERLEFT,
+		ELBOWLEFT,
+		WRISTLEFT,
+		HANDLEFT,
+		SHOULDERRIGHT,
+		ELBOWRIGHT,
+		WRISTRIGHT,
+		HANDRIGHT,
+		HIPLEFT,
+		KNEELEFT,
+		ANKLELEFT,
+		FOOTLEFT,
+		HIPRIGHT,
+		KNEERIGHT,
+		ANKLERIGHT,
+		FOOTRIGHT,
+		SPINESHOULDER,
+		HANDTIPLEFT,
+		THUMBLEFT,
+		HANDTIPRIGHT,
+		THUMBRIGHT,
+	};
 
 
 
